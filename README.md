@@ -1,5 +1,6 @@
 # iCalendar-syntax-highlight
-syntax-highlight file for iCalendar to be used by GtkSourceView (gnome-text-editor / gedit)
+syntax-highlight .lang file targeting iCalendar files .ics to be used by GtkSourceView (gnome-text-editor / gedit)
+with this you'll get a nice syntax coloring of your .ics calendar files at the text editor
 
 the file should be placed at /usr/share/gtksourceview-5/languages-specs
 
