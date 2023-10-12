@@ -1,7 +1,7 @@
 # iCalendar-syntax-highlight
 syntax-highlight file for iCalendar to be used by GtkSourceView (gnome-text-editor / gedit)
 
-the files should be placed at /usr/share/gtksourceview-5/languages-specs
+the file should be placed at /usr/share/gtksourceview-5/languages-specs
 
 https://github.com/GNOME/gtksourceview
 https://developer-old.gnome.org/gtksourceview/stable/lang-tutorial.html
