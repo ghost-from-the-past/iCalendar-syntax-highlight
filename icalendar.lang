@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+ Author: Daniel Calcoen
+-->
+<!-- 
+Comments: def:comment, def:shebang, def:doc-comment-element
+Constants : def:constant, def:string, def:special-char, def:special-constant, def:floating-point
+Identifiers : def:identifier
+Statements : def:statement
+Types : def:type
+Markup : def:emphasis, def:strong-emphasis, def:inline-code, def:insertion, def:deletion, def:link-text, def:link-symbol, def:link-destination, def:heading, def:thematic-break, def:preformatted-section, def:list-marker
+Others : def:preprocessor, def:error, def:warning, def:note, def:net-address, 
+  -->
+<language id="icalendar" name="iCalendar" version="2.0" _section="Source">
+  <metadata>
+    <property name="mimetypes">text/x-icalendar</property>
+    <property name="globs">*.ics</property>
+    <property name="line-comment-start">//</property>
+  </metadata>
+
+  <styles>
+    <style id="comment" name="Comment" map-to="def:comment"/>
+    <style id="string" name="String" map-to="def:string"/>
+    <style id="keyword" name="Keyword" map-to="def:keyword"/>
+    <style id="decimal" name="Decimal" map-to="def:decimal"/>
+    <style id="type" name="Data Type" map-to="def:type"/>
+    <style id="preprocessor" name="Preprocessor" map-to="def:preprocessor"/>
+    <style id="statement" name="Statement" map-to="def:statement"/>
+    <style id="identifier" name="Identifier" map-to="def:identifier"/>
+    <style id="constant" name="Constant" map-to="def:constant"/>
+  </styles>
+
+  <default-regex-options case-sensitive="true"/>
+
+  <definitions>
+
+    <context id="string" style-ref="string" class="string" class-disabled="no-spell-check">
+      <start>[uUrR]?'</start>
+      <end>'</end>
+    </context>
+
+    <context id="line-comment" style-ref="comment" end-at-line-end="true" class="comment" class-disabled="no-spell-check">
+      <start>//</start>
+      <include>
+        <context ref="def:in-comment"/>
+      </include>
+    </context>
+
+    <context id="block-comment-1" style-ref="comment" class="comment" class-disabled="no-spell-check">
+      <start>\(\*</start>
+      <end>\*\)</end>
+      <include>
+        <context ref="def:in-comment"/>
+      </include>
+    </context>
+
+    <context id="block-comment-2" style-ref="comment" class="comment" class-disabled="no-spell-check">
+      <start>\{</start>
+      <end>\}</end>
+      <include>
+        <context ref="def:in-comment"/>
+      </include>
+    </context>
+
+    <context id="preprocessor-defines" style-ref="preprocessor" end-at-line-end="true">
+      <start>\{\$</start>
+      <end>\}</end>
+    </context>
+
+    <context id="general-format" style-ref="keyword">
+      <keyword>VCALENDAR</keyword>
+      <keyword>VTIMEZONE</keyword>
+      <keyword>STANDARD</keyword>
+      <keyword>DAYLIGHT</keyword>
+      <keyword>VALARM</keyword>
+      <keyword>VEVENT</keyword>
+    </context>
+
+    <context id="functions-and-function-modifiers" style-ref="statement">
+      <keyword>BEGIN</keyword>
+      <keyword>END</keyword>
+    </context>
+
+    <context id="boolean-bitwise-operators" style-ref="type">
+      <keyword>PRODID</keyword>
+      <keyword>VERSION</keyword>
+      <keyword>TZID</keyword>
+      <keyword>TZOFFSETTO</keyword>
+      <keyword>TZOFFSETFROM</keyword>
+      <keyword>TZNAME</keyword>
+      <keyword>DTSTART</keyword>
+      <keyword>DTEND</keyword>
+      <keyword>RDATE</keyword>
+      <keyword>RRULE</keyword>
+      <keyword>LAST-MODIFIED</keyword>
+      <keyword>DTSTAMP</keyword>
+      <keyword>SUMMARY</keyword>
+      <keyword>UID</keyword>
+      <keyword>STATUS</keyword>
+      <keyword>ATTENDEE</keyword>
+      <keyword>ORGANIZER</keyword>
+      <keyword>CREATED</keyword>
+    </context>
+
+    <context id="math-operators" style-ref="keyword">
+      <keyword>X-TZINFO</keyword>
+      <keyword>X-EAS-BUSYSTATUS</keyword>
+      <keyword>X-EAS-SENSITIVITY</keyword>
+      <keyword>X-EAS-RESPONSETYPE</keyword>
+      <keyword>X-EAS-MEETINGSTATUS</keyword>
+    </context>
+
+    <context id="loop-flow-and-exceptions-keywords" style-ref="identifier">
+      <keyword>FREQ</keyword>
+      <keyword>BYMONTH</keyword>
+      <keyword>BYDAY</keyword>
+      <keyword>UNTIL</keyword>
+    </context>
+
+    <context id="type-class-and-object-keywords" style-ref="keyword">
+      <keyword>to-do</keyword>
+    </context>
+
+    <context id="builtin-types" style-ref="type">
+      <keyword>to-do-also</keyword>
+    </context>
+
+    <context id="builtin-functions" style-ref="keyword">
+      <keyword>and-to-do</keyword>
+    </context>
+
+    <context id="builtin-values" style-ref="constant">
+      <keyword>YEARLY</keyword>
+      <keyword>(DST)</keyword>
+      <keyword>(STD)</keyword>
+    </context>
+
+    <context id="number" style-ref="decimal">
+      <match extended="true">
+        (?&lt;![\w\.])
+        (([0-9]+)|([0-9]+\.[0-9]+([Ee][-]?[0-9]+)?))
+        (?![\w\.])
+      </match>
+    </context>
+
+    <context id="hex-number" style-ref="decimal">
+      <match extended="true">
+        (?&lt;![\w\.])
+        \$[0-9a-fA-F]*
+        (?![\w\.])
+      </match>
+    </context>
+
+    <context id="icalendar" class="no-spell-check">
+      <include>
+        <context ref="string"/>
+        <context ref="line-comment"/>
+        <context ref="preprocessor-defines"/>
+        <context ref="block-comment-1"/>
+        <context ref="block-comment-2"/>
+        <context ref="general-format"/>
+        <context ref="functions-and-function-modifiers"/>
+        <context ref="boolean-bitwise-operators"/>
+        <context ref="math-operators"/>
+        <context ref="loop-flow-and-exceptions-keywords"/>
+        <context ref="type-class-and-object-keywords"/>
+        <context ref="builtin-types"/>
+        <context ref="builtin-functions"/>
+        <context ref="builtin-values"/>
+        <context ref="number"/>
+        <context ref="hex-number"/>
+      </include>
+    </context>
+
+  </definitions>
+</language>
