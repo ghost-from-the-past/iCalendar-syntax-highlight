@@ -17,3 +17,5 @@ https://github.com/GNOME/gedit
 https://github.com/jonocodes/GeditSchemer
 
 https://github.com/jonocodes/GtkSourceSchemer
+
+https://www.kanzaki.com/docs/ical/
