@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+
+ Author: Daniel CALCOEN
+
+-->
+<!-- 
+Comments: def:comment, def:shebang, def:doc-comment-element
+Constants : def:constant, def:string, def:special-char, def:special-constant, def:floating-point
+Identifiers : def:identifier
+Statements : def:statement
+Types : def:type
+Markup : def:emphasis, def:strong-emphasis, def:inline-code, def:insertion, def:deletion, def:link-text, def:link-symbol, def:link-destination, def:heading, def:thematic-break, def:preformatted-section, def:list-marker
+Others : def:preprocessor, def:error, def:warning, def:note, def:net-address, 
+  -->
+<language id="icalendar" name="iCalendar" version="2.0" _section="Source">
+  <metadata>
+    <property name="mimetypes">text/x-icalendar</property>
+    <property name="globs">*.ics</property>
+    <property name="line-comment-start">//</property>
+  </metadata>
+
+  <styles>
+    <style id="comment" name="Comment" map-to="def:comment"/>
+    <style id="string" name="String" map-to="def:string"/>
+    <style id="component" name="Component" map-to="def:keyword"/>
+    <style id="decimal" name="Decimal" map-to="def:decimal"/>
+    <style id="type" name="Data Type" map-to="def:type"/>
+    <style id="preprocessor" name="Preprocessor" map-to="def:preprocessor"/>
+    <style id="statement" name="Statement" map-to="def:statement"/>
+    <style id="identifier" name="Identifier" map-to="def:identifier"/>
+    <style id="constant" name="Constant" map-to="def:constant"/>
+  </styles>
+
+  <default-regex-options case-sensitive="true"/>
+
+  <definitions>
+
+    <context id="string" style-ref="string" class="string" class-disabled="no-spell-check">
+      <start>[uUrR]?'</start>
+      <end>'</end>
+    </context>
+
+    <context id="number" style-ref="decimal">
+      <match extended="true">
+        (?&lt;![\w\.])
+        (([0-9]+)|([0-9]+\.[0-9]+([Ee][-]?[0-9]+)?))
+        (?![\w\.])
+      </match>
+    </context>
+
+    <context id="hex-number" style-ref="decimal">
+      <match extended="true">
+        (?&lt;![\w\.])
+        \$[0-9a-fA-F]*
+        (?![\w\.])
+      </match>
+    </context>
+
+    <context id="block-marks" style-ref="component">
+      <keyword>BEGIN</keyword>
+      <keyword>END</keyword>
+    </context>
+
+    <context id="calendar-component" style-ref="component">
+      <keyword>VCALENDAR</keyword>
+      <keyword>VEVENT</keyword>
+      <keyword>VTODO</keyword>
+      <keyword>VJOURNAL</keyword>
+      <keyword>VFREEBUSY</keyword>
+      <keyword>VTIMEZONE</keyword>
+      <keyword>VALARM</keyword>
+      <keyword>DAYLIGHT</keyword>
+      <keyword>STANDARD</keyword>
+    </context>
+
+    <context id="vcalendar-props" style-ref="type">
+      <keyword>CALSCALE</keyword>
+      <keyword>PRODID</keyword>
+      <keyword>VERSION</keyword>
+    </context>
+    
+    <context id="vevent-props" style-ref="type">
+      <keyword>ATTENDEE</keyword>
+      <keyword>CATEGORIES</keyword>
+      <keyword>CLASS</keyword>
+      <keyword>DESCRIPTION</keyword>
+      <keyword>DTEND</keyword>
+      <keyword>DTSTAMP</keyword>
+      <keyword>DTSTART</keyword>
+      <keyword>LOCATION</keyword>
+      <keyword>ORGANIZER</keyword>
+      <keyword>RRULE</keyword>
+      <keyword>SEQUENCE</keyword>
+      <keyword>SUMMARY</keyword>
+      <keyword>TRANSP</keyword>
+      <keyword>UID</keyword>
+    </context>
+
+    <context id="vtodo-props" style-ref="type">
+      <keyword>PERCENTCOMPLETE</keyword>
+      <keyword>PRIORITY</keyword>
+      <keyword>STATUS</keyword>
+    </context>
+
+    <context id="vtimezone-props" style-ref="type">
+      <keyword>TZID</keyword>
+    </context>
+
+    <context id="common" style-ref="identifier">
+      <keyword>ACTION</keyword>
+      <keyword>BYDAY</keyword>
+      <keyword>BYMONTH</keyword>
+      <keyword>CN</keyword>
+      <keyword>CUTYPE</keyword>
+      <keyword>CREATED</keyword>
+      <keyword>DATE</keyword>
+      <keyword>DURATION</keyword>
+      <keyword>FREQ</keyword>
+      <keyword>INTERVAL</keyword>
+      <keyword>LANGUAGE</keyword>
+      <keyword>LAST-MODIFIED</keyword>
+      <keyword>PARTSTAT</keyword>
+      <keyword>RDATE</keyword>
+      <keyword>RELATED</keyword>
+      <keyword>ROLE</keyword>
+      <keyword>RSVP</keyword>
+      <keyword>TRIGGER</keyword>
+      <keyword>TZNAME</keyword>
+      <keyword>TZOFFSETTO</keyword>
+      <keyword>TZOFFSETFROM</keyword>
+      <keyword>UNTIL</keyword>
+      <keyword>VALUE</keyword>
+    </context>
+
+    <context id="extras" style-ref="comment">
+      <keyword>X-EAS-BUSYSTATUS</keyword>
+      <keyword>X-EAS-SENSITIVITY</keyword>
+      <keyword>X-EAS-RESPONSETYPE</keyword>
+      <keyword>X-EAS-MEETINGSTATUS</keyword>
+      <keyword>X-TZINFO</keyword>
+      <keyword>XDATE</keyword>
+    </context>
+
+    <context id="modifiers" style-ref="constant">
+      <keyword>(DST)</keyword>
+      <keyword>(STD)</keyword>
+      <keyword>ACCEPTED</keyword>
+      <keyword>FALSE</keyword>
+      <keyword>INDIVIDUAL</keyword>
+      <keyword>YEARLY</keyword>
+    </context>
+
+    <context id="icalendar" class="no-spell-check">
+      <include>
+        <context ref="string"/>
+        <context ref="number"/>
+        <context ref="hex-number"/>
+        <context ref="calendar-component"/>
+        <context ref="block-marks"/>
+        <context ref="vcalendar-props"/>
+        <context ref="vevent-props"/>
+        <context ref="vtodo-props"/>
+        <context ref="vtimezone-props"/>
+        <context ref="extras"/>
+        <context ref="common"/>
+        <context ref="modifiers"/>
+      </include>
+    </context>
+
+  </definitions>
+</language>
